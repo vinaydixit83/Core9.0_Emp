@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOTNET_HOME = "C:\\Program Files\\dotnet" // Adjust the path for .NET SDK on your local Jenkins server
-        PATH = "D:\\Workspace\\EmpManagementV1\\Publish"
+        DOTNET_HOME = "C:\\Program Files\\dotnet" // Path to .NET SDK
+         PATH = "${DOTNET_HOME};${env.PATH}"
     }
 
     
@@ -15,26 +15,18 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/vinaydixit83/Core9.0_Emp.git'
             }
         }
-
-stage('Clear NuGet Cache') {
-    steps {
-        echo 'Clearing NuGet cache...'
-        bat '"%DOTNET_HOME%\\dotnet.exe" nuget locals all --clear'
-    }
-}
-
-        
+   
         stage('Restore Dependencies') {
             steps {
                 echo 'Restoring dependencies...'
-             bat '"C:\\Program Files\\dotnet\\dotnet.exe" restore'
+             bat 'dotnet restore'
             }
         }
 
          stage('Build') {
             steps {
                 echo 'Building the application...'
-                bat 'C:\\Program Files\\dotnet\\dotnet.exe" build --configuration Release'
+                  bat '"C:\\Program Files\\dotnet\\dotnet.exe" build --configuration Release'
             }
         }
 
