@@ -6,6 +6,8 @@ pipeline {
         PATH = "D:\\Workspace\\EmpManagementV1\\Publish"
     }
 
+    
+    
     stages {
         stage('Clone Repository') {
             steps {
@@ -14,6 +16,14 @@ pipeline {
             }
         }
 
+stage('Clear NuGet Cache') {
+    steps {
+        echo 'Clearing NuGet cache...'
+        bat '"C:\\Program Files\\dotnet\\dotnet.exe" nuget locals all --clear'
+    }
+}
+
+        
         stage('Restore Dependencies') {
             steps {
                 echo 'Restoring dependencies...'
