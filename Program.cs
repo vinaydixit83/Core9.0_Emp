@@ -1,9 +1,11 @@
 
 using EmployeeManagement.DataAccess;
 using EmployeeManagement.Middleware;
+using EmployeeManagement.Models;
 using EmployeeManagement.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models;
 
 namespace EmployeeManagement
 {
@@ -16,19 +18,31 @@ namespace EmployeeManagement
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
-            //builder.Services.AddSwaggerGen();
+ 
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Payment API", Version = "v1" });
+            });
+
+            builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMQ"));
+            builder.Services.AddHostedService<RabbitMqConsumerService>();
 
 
             // Configure database
-            //var connectionString = new Microsoft.Extensions.Configuration.ConfigurationManager.ConfigurationManagerDebugView(builder.Configuration).Items[11]
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            //var connectionString = builder.Configuration.GetSection("AppSettings.ConnectionString").Value;
-            //new Microsoft.Extensions.Configuration.ConfigurationManager.ConfigurationManagerDebugView(builder.Configuration).Items[11]
             builder.Services.AddSingleton(new Repository(connectionString));
+
             builder.Services.AddTransient<EmployeeService>();
 
+            builder.Services.AddTransient<IPaymentRepository,PaymentRepository>();
+            builder.Services.AddTransient<IPaymentService, PaymentService>();
+
+
+
+            //builder.Services.AddTransient<RabbitMsgRepository>();
+
+            
 
 
             var app = builder.Build();
@@ -40,9 +54,12 @@ namespace EmployeeManagement
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+                //app.MapOpenApi();
                 //app.UseSwagger();
-               // app.UseSwaggerUI();
+                 //app.UseSwaggerUI();
+               
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Payment API v1"));
             }
 
             app.UseHttpsRedirection();
