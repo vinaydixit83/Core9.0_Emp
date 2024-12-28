@@ -9,8 +9,11 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                echo 'Cloning the repository...'
-                git branch: 'main', url: 'https://github.com/vinaydixit83/Core9.0_Emp.git'
+                echo 'Restoring dependencies...'
+                bat '''
+                @echo off
+                "C:\\Program Files\\dotnet\\dotnet.exe" restore
+                '''
             }
         }
 
