@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-    //environment {
-       // DOTNET_HOME = "/usr/share/dotnet" // Adjust the path for .NET SDK on your local Jenkins server
-       // PATH = "${env.DOTNET_HOME}:${env.PATH}"
-   // }
+    environment {
+        DOTNET_HOME = "C:\\Program Files\\dotnet" // Adjust the path for .NET SDK on your local Jenkins server
+        PATH = "D:\\Workspace\\EmpManagementV1\\Publish"
+    }
 
     stages {
         stage('Clone Repository') {
@@ -17,21 +17,21 @@ pipeline {
         stage('Restore Dependencies') {
             steps {
                 echo 'Restoring dependencies...'
-                bat 'dotnet restore'
+            powershell '"C:\\Program Files\\dotnet\\dotnet.exe" restore'
             }
         }
 
          stage('Build') {
             steps {
                 echo 'Building the application...'
-                bat 'dotnet build --configuration Release'
+                bat 'C:\\Program Files\\dotnet\\dotnet.exe" build --configuration Release'
             }
         }
 
          stage('publish') {
             steps {
                 script {
-                    bat 'dotnet publish --not-restore --configuration Release --output .\\publish'
+                    bat '"%DOTNET_HOME%\\dotnet.exe" publish --configuration Release --output D:\\Workspace\\EmpManagementV1\\Publish'
                 }
                 //echo 'Building the application...'
             }
