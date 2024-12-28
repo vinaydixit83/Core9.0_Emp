@@ -17,14 +17,14 @@ pipeline {
         stage('Restore Dependencies') {
             steps {
                 echo 'Restoring dependencies...'
-                bat '"%DOTNET_HOME%\\dotnet.exe" restore'
+                bat 'C:\\Program Files\\dotnet\\dotnet.exe" restore'
             }
         }
 
          stage('Build') {
             steps {
                 echo 'Building the application...'
-                bat '"%DOTNET_HOME%\\dotnet.exe" build --configuration Release'
+                bat 'C:\\Program Files\\dotnet\\dotnet.exe" build --configuration Release'
             }
         }
 
