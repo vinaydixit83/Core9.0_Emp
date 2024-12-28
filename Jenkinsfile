@@ -19,7 +19,7 @@ pipeline {
 stage('Clear NuGet Cache') {
     steps {
         echo 'Clearing NuGet cache...'
-        bat '"C:\\Program Files\\dotnet\\dotnet.exe" nuget locals all --clear'
+        bat '"%DOTNET_HOME%\\dotnet.exe" nuget locals all --clear'
     }
 }
 
