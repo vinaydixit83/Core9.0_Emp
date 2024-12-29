@@ -42,9 +42,6 @@ namespace EmployeeManagement
 
             //builder.Services.AddTransient<RabbitMsgRepository>();
 
-            
-
-
             var app = builder.Build();
             // Add custom error-handling middleware
             app.UseMiddleware<ErrorHandlingMiddleware>();
