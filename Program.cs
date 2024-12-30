@@ -57,6 +57,7 @@ namespace EmployeeManagement
             app.UseAuthorization();
             app.MapControllers();
 
+            
             app.Run();
         }
     }
